@@ -1,0 +1,26 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+allow-hotplug eth0
+iface eth0 inet dhcp
+iface eth0 inet6 static
+   address 2605:6400:20:18e9:881a:7b91:1a81:f7eb
+   netmask 48
+  # post-up ip -6 route add default via 2605:6400:20::1 dev eth0 src 2401:95c0:f001::1
+   # gateway 2605:6400:20::1
+
+# The BGP Session
+auto dummy0
+iface dummy0 inet6 static
+    address 2401:95c0:f001::1/128
+    pre-up ip link add dummy0 type dummy || true
+    post-up ip -6 route add default via 2605:6400:20::1 dev eth0 src 2401:95c0:f001::1
+    post-down ip link del dummy0 || true
