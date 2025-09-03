@@ -1,0 +1,86 @@
+# This is an example config of SND.
+
+listen = [
+    # protocol:ip.addr:port
+    "tcp::53",
+    "udp::53",
+]
+
+# set to the domain names of your authoritive DNS servers
+NS = [
+    "ns1.owo.network.",
+    "ns2.owo.network.",
+]
+
+# use DNS pointer compression
+compress_dns_messages = true
+
+# disable querying DNS server version by a DNS request
+allow_version_reporting = false
+# alternatively, you can fake the version string
+# version_string = "bind-⑨"
+
+# This will become the default SOA record for all your networks, unless overrided.
+# Make it exactly the same across all servers.
+[SOA]
+# your primary NS, usually the domain name of one of your NS servers, dot at end
+MName = "ns1.owo.network."
+# your email in dot notation, dot at end
+RName = "vincent.owo.network.."
+## Optional fields, see Wikipedia for explanation
+# Serial = 1970010101
+# Refresh = 86400
+# Retry = 7200
+# Expire = 3600000
+# TTL = 172800
+
+# Define your nets here
+[[net]]
+net = "23.191.8.0/24"
+mode = "prefix_ltr"
+domain = "owo.network"
+# Generates "192.168.1.1.example.com."
+
+# [[net]]
+# net = "192.168.2.0/24"
+# mode = "prefix_rtl"
+# domain = "example.com"
+# Generates "1.2.168.192.example.com."
+
+# [[net]]
+# net = "192.168.3.0/24"
+# mode = "fixed"
+# domain = "example.com"
+# Generates "example.com."
+
+# [[net]]
+# net = "192.168.4.0/24"
+# mode = "prefix_ltr"
+# domain = "example.com"
+# domain_prefix = "yes."
+# Generates "yes.192.168.4.1.example.com."
+# Note: domain_prefix is applied without any sanity check. Make sure it doesn't violate the rules.
+
+# [[net]]
+# net = "fd00::/48"
+# mode = "prefix_ltr"
+# domain = "example.com"
+# Works for IPv6 too! Generates "f.d.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.example.com."
+
+[[net]]
+net = "2602:f7ee:fe::/48"
+mode = "prefix_ltr"
+domain = "showdns.com"
+ipv6_notation = "four_hexs"
+
+[[net]]
+net = "2602:f7ee::/40"
+mode = "prefix_ltr"
+domain = "owo.network"
+ipv6_notation = "four_hexs"
+# Default IPv6 notation is too long for you? This generates "fd00.1.0.0.0.0.0.1.example.com."
+
+# [host]
+# quick way to generate a static record for a static IP
+# "10.10.10.10" = "internal10.example.com"
+# "10.10.10.20" = "internal20.example.com"
